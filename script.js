@@ -239,3 +239,31 @@ document.getElementById('notice-close').addEventListener('click', () => {
 });
 // Aparece novamente ao recarregar; dispensas antigas não escondem a demonstração.
 noticeTimer = setTimeout(showNotice, 2000);
+
+// ================================
+// META PIXEL - CLIQUE NO WHATSAPP
+// ================================
+
+document.addEventListener("click", function (event) {
+    const target = event.target;
+
+    if (!(target instanceof Element)) return;
+
+    const link = target.closest('a[href*="chat.whatsapp.com"]');
+
+    if (!link) return;
+
+    const metaLeadTracked = sessionStorage.getItem("metaLeadTracked");
+
+    if (typeof fbq === "function" && !metaLeadTracked) {
+
+        fbq("track", "Lead", {
+            content_name: "Entrada Grupo WhatsApp",
+            content_category: "WhatsApp"
+        });
+
+        sessionStorage.setItem("metaLeadTracked", "true");
+
+        console.log("Meta Pixel: Lead enviado");
+    }
+});
